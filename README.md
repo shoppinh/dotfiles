@@ -13,6 +13,8 @@ Personal shell and editor configuration for macOS.
 | `.config/nvim/` | LazyVim-based Neovim setup |
 | `.config/starship.toml` | Starship prompt (Fish) |
 | `.config/karabiner/` | Keyboard remapping (macOS) |
+| `.config/kitty/` | Kitty terminal (Tokyo Night theme) |
+| `.config/ghostty/` | Ghostty terminal (symlinked to Application Support on macOS) |
 | `.tmux.conf` | tmux + TPM plugins, lazygit/cursor popups |
 
 ## Security
@@ -33,6 +35,7 @@ Use the `*.example` files for local-only overrides.
 - [Neovim](https://neovim.io/) (LazyVim bootstraps plugins on first launch)
 - [Starship](https://starship.rs/), [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf)
 - [tmux](https://github.com/tmux/tmux) + [TPM](https://github.com/tmux-plugins/tpm) (`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`)
+- [Kitty](https://sw.kovidgoyal.net/kitty/) or [Ghostty](https://ghostty.org/) (terminal emulators)
 
 ## Install
 

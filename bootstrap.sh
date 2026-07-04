@@ -32,6 +32,10 @@ link_file "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
 link_file "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/.config/starship.toml" "$HOME/.config/starship.toml"
 link_file "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"
+link_file "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
+
+mkdir -p "$HOME/Library/Application Support/com.mitchellh.ghostty"
+link_file "$DOTFILES_DIR/.config/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
 
 if [[ ! -f "$HOME/.gitconfig.local" ]]; then
   cp "$DOTFILES_DIR/.gitconfig.local.example" "$HOME/.gitconfig.local"
