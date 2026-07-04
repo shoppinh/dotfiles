@@ -55,7 +55,13 @@ fi
 if command -v fish >/dev/null 2>&1; then
   echo
   echo "Installing Fish plugins (Fisher)..."
-  fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually if this failed)"
+  if command -v gtimeout >/dev/null 2>&1; then
+    gtimeout 120 fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually)"
+  elif command -v timeout >/dev/null 2>&1; then
+    timeout 120 fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually)"
+  else
+    fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually if this failed)"
+  fi
 fi
 
 echo
