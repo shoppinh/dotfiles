@@ -79,8 +79,8 @@ Copy local overrides from a secure backup if migrating:
 For API keys after clone:
 
 ```bash
-chmod +x scripts/setup-local-secrets.sh
-./scripts/setup-local-secrets.sh
+chmod +x scripts/setup-local-env.sh
+./scripts/setup-local-env.sh
 # Rotate key at https://cursor.com/dashboard, then export CURSOR_API_KEY in ~/.zshrc.local
 ```
 
@@ -100,7 +100,7 @@ Never commit API keys, tokens, or credential files. Use `*.example` and `*.local
 
 - **cursor-agent.nvim** reads `CURSOR_API_KEY` from the environment only (never hardcode in Lua).
 - If a key was ever committed, rotate it at [cursor.com/dashboard](https://cursor.com/dashboard) (Service Accounts) and update `~/.zshrc.local`.
-- Run `./scripts/setup-local-secrets.sh` on a new machine to add the local env template.
+- Run `./scripts/setup-local-env.sh` on a new machine to add the local env template.
 
 ## Install
 
@@ -109,7 +109,7 @@ git clone https://github.com/kienmac2k/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 chmod +x bootstrap.sh scripts/*.sh
 ./bootstrap.sh
-./scripts/setup-local-secrets.sh
+./scripts/setup-local-env.sh
 ```
 
 ```bash
