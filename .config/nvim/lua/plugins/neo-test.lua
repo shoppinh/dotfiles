@@ -2,8 +2,11 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
-      "marilari88/neotest-vitest",
-      "haydenmeade/neotest-jest",
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-jest",
     },
     opts = function(_, opts)
       -- 1. Retain your static configurations

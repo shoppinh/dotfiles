@@ -1,0 +1,5 @@
+# Machine-specific login shell paths (not committed)
+# Copy to ~/.zprofile.local and source from ~/.zprofile if needed.
+
+# export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+# export PATH="$PATH:$HOME/.dotnet/tools"
