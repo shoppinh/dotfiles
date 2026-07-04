@@ -1,0 +1,61 @@
+# Secrets and credentials — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+id_ecdsa
+*.credentials.json
+**/application_default_credentials.json
+**/adc.json
+**/credentials.json
+**/secrets.json
+**/*secret*
+**/*token*
+**/.claude/*.local.json
+
+# Local overrides (personal info, machine paths)
+.gitconfig.local
+.zshrc.local
+.config/fish/config-local.fish
+.config/fish/fish_variables
+.config/fish/fishd.*
+
+# Cloud / auth tool state
+.config/gcloud/
+.config/configstore/
+.config/github-copilot/
+.config/gh/
+.config/opencode/opencode.json
+
+# Neovim generated / local
+.config/nvim/lazy-lock.json
+.config/nvim/lazyvim.json
+.config/nvim/lazy/
+.config/nvim/undo/
+.config/nvim/swap/
+.config/nvim/session/
+.config/nvim/.netrwhist
+
+# Karabiner backups
+.config/karabiner/automatic_backups/
+
+# OS / editor junk
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Nested git repos (plugins vendored locally)
+**/.git/
+
+# Build artifacts
+**/node_modules/
+**/obj/
+**/bin/

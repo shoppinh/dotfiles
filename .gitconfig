@@ -1,0 +1,29 @@
+[core]
+	editor = nvim
+	ignorecase = false
+
+[push]
+	default = simple
+
+[color]
+	status = auto
+	diff = auto
+	branch = auto
+
+[ghq]
+	root = ~/.ghq
+
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential]
+	helper = osxkeychain
+
+# Personal name/email live in ~/.gitconfig.local (not committed)
+[include]
+	path = ~/.gitconfig.local

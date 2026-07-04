@@ -1,0 +1,14 @@
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol   = "[❯](bold red)"

@@ -1,0 +1,6 @@
+# Copy to ~/.gitconfig.local and fill in your details.
+# This file is gitignored and never pushed.
+
+[user]
+	name = Your Name
+	email = you@example.com

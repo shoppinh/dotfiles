@@ -1,0 +1,77 @@
+return {
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "dracula",
+    },
+  },
+  {
+    "morhetz/gruvbox",
+  },
+  {
+    "rebelot/kanagawa.nvim",
+  },
+  {
+    "sainnhe/everforest",
+  },
+  {
+    "scottmckendry/cyberdream.nvim",
+  },
+  {
+    "EdenEast/nightfox.nvim",
+  },
+  {
+    "sainnhe/gruvbox-material",
+  },
+  {
+    "olimorris/onedarkpro.nvim",
+  },
+  {
+    "savq/melange-nvim",
+  },
+  {
+    "rose-pine/neovim",
+  },
+  {
+    "projekt0n/github-nvim-theme",
+  },
+  {
+    "eldritch-theme/eldritch.nvim",
+  },
+  {
+    "bluz71/vim-nightfly-colors",
+  },
+  { "savq/melange-nvim" },
+  { "AlexvZyl/nordic.nvim" },
+  {
+    "zenbones-theme/zenbones.nvim",
+  },
+  {
+    "jacoborus/tender.vim",
+  },
+  {
+    "bluz71/vim-moonfly-colors",
+  },
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+  },
+  {
+    "rktjmp/lush.nvim",
+  },
+  {
+    "Mofiqul/vscode.nvim",
+  },
+  {
+    "Mofiqul/dracula.nvim",
+  },
+  {
+    "marko-cerovac/material.nvim",
+  },
+  { "craftzdog/solarized-osaka.nvim" },
+  {
+    "sainnhe/sonokai",
+  },
+  {
+    "tiagovla/tokyodark.nvim",
+  },
+}
