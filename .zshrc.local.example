@@ -3,3 +3,6 @@
 
 # export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 # export PATH="$HOME/.opencode/bin:$PATH"
+
+# Cursor CLI + cursor-agent.nvim (generate at https://cursor.com/dashboard)
+# export CURSOR_API_KEY="crsr_..."

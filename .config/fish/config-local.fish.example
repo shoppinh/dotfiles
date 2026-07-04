@@ -1,3 +1,6 @@
 # Machine-specific fish overrides — copy to ~/.config/fish/config-local.fish
 
 # fish_add_path ~/.custom/bin
+
+# Cursor CLI + cursor-agent.nvim (generate at https://cursor.com/dashboard)
+# set -gx CURSOR_API_KEY "crsr_..."

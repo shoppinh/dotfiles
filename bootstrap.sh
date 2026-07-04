@@ -25,6 +25,7 @@ echo
 
 link_file "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
+link_file "$DOTFILES_DIR/.zprofile" "$HOME/.zprofile"
 link_file "$DOTFILES_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 link_file "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
 
@@ -50,6 +51,34 @@ if [[ ! -f "$HOME/.gitconfig.local" ]]; then
   cp "$DOTFILES_DIR/.gitconfig.local.example" "$HOME/.gitconfig.local"
   echo
   echo "Created ~/.gitconfig.local — edit with your name and email."
+fi
+
+if [[ ! -f "$HOME/.zshrc.local" ]]; then
+  cp "$DOTFILES_DIR/.zshrc.local.example" "$HOME/.zshrc.local"
+  echo "Created ~/.zshrc.local — add machine-specific paths and API keys."
+fi
+
+if [[ ! -f "$HOME/.zprofile.local" ]]; then
+  cp "$DOTFILES_DIR/.zprofile.local.example" "$HOME/.zprofile.local"
+  echo "Created ~/.zprofile.local — add login-shell paths (Toolbox, .NET, etc.)."
+fi
+
+if command -v brew >/dev/null 2>&1 && [[ -f "$DOTFILES_DIR/Brewfile" ]]; then
+  echo
+  echo "Installing Homebrew packages from Brewfile..."
+  brew bundle install --file="$DOTFILES_DIR/Brewfile" --no-upgrade || \
+    echo "  (run \`brew bundle install --file=$DOTFILES_DIR/Brewfile\` manually if this failed)"
+fi
+
+if [[ -x "$DOTFILES_DIR/scripts/install-omz-plugins.sh" ]]; then
+  echo
+  "$DOTFILES_DIR/scripts/install-omz-plugins.sh"
+fi
+
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+  echo
+  echo "Installing tmux plugin manager (TPM)..."
+  git clone --depth=1 https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
 if command -v fish >/dev/null 2>&1; then

@@ -9,6 +9,7 @@ Personal shell and editor configuration for macOS.
 | `.gitconfig` | Git defaults (name/email in local override) |
 | `.config/git/ignore` | Global gitignore (e.g. Claude local settings) |
 | `.zshrc` | Oh My Zsh + Powerlevel10k + Starship |
+| `.zprofile` | Login shell paths (sources `~/.zprofile.local`) |
 | `.p10k.zsh` | Powerlevel10k prompt theme |
 | `.config/fish/` | Fish shell + **Fisher** plugins (see below) |
 | `.config/fish/fish_plugins` | Fisher plugin list (not oh-my-fish) |
@@ -26,6 +27,8 @@ Personal shell and editor configuration for macOS.
 | `.config/lazygit/` | lazygit TUI config |
 | `.config/mise/` | mise runtime versions |
 | `.tmux.conf` | tmux + TPM plugins, lazygit/cursor popups |
+| `Brewfile` | Homebrew dependencies for a fresh Mac |
+| `scripts/install-omz-plugins.sh` | Oh My Zsh plugins + Powerlevel10k theme |
 
 ## Fish plugins (Fisher, not oh-my-fish)
 
@@ -44,24 +47,42 @@ Vendored `functions/fisher.fish` bootstraps Fisher if needed. Plugin code lands 
 
 ## Fresh machine checklist
 
-After `git clone` and `./bootstrap.sh`, install separately:
+After `git clone` and `./bootstrap.sh`:
+
+| Step | What bootstrap does |
+|------|---------------------|
+| Symlinks | All dotfiles into `$HOME` |
+| `Brewfile` | `brew bundle install` (if Homebrew is installed) |
+| Oh My Zsh plugins | Clones plugins/themes when `~/.oh-my-zsh` exists |
+| tmux TPM | Clones to `~/.tmux/plugins/tpm` |
+| Fisher | Runs `fisher update` when Fish is installed |
+| Local templates | Creates `~/.gitconfig.local`, `~/.zshrc.local`, `~/.zprofile.local` from examples |
+
+Install separately if not already present:
 
 | Tool | Install |
 |------|---------|
-| Homebrew | Standard install |
-| Oh My Zsh + plugins | [ohmyz.sh](https://ohmyz.sh/) + plugins in `~/.oh-my-zsh/custom/plugins/` |
-| Fish + Fisher | `brew install fish` → bootstrap runs `fisher update` |
-| tmux TPM | `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm` |
-| yabai + skhd + SketchyBar | `brew install yabai skhd sketchybar` + Accessibility permissions |
-| lazygit, mise | `brew install lazygit mise` |
+| Homebrew | Standard install (before bootstrap for Brewfile) |
+| Oh My Zsh | [ohmyz.sh](https://ohmyz.sh/) — then re-run bootstrap or `./scripts/install-omz-plugins.sh` |
+| yabai + skhd + SketchyBar | Accessibility permissions after brew install |
 | gh auth | `gh auth login` |
-| Nerd fonts | JetBrainsMono, MesloLGS, etc. |
+| Neovim | Your preferred install path (Homebrew, mise, etc.) |
+| Kitty / Ghostty | Optional terminals (configs included) |
 
-Copy local overrides from a secure backup:
+Copy local overrides from a secure backup if migrating:
 
 - `~/.gitconfig.local`
-- `~/.zshrc.local`
+- `~/.zshrc.local` (API keys, extra paths)
+- `~/.zprofile.local` (login-shell paths)
 - `~/.config/fish/config-local.fish`
+
+For API keys after clone:
+
+```bash
+chmod +x scripts/setup-local-secrets.sh
+./scripts/setup-local-secrets.sh
+# Rotate key at https://cursor.com/dashboard, then export CURSOR_API_KEY in ~/.zshrc.local
+```
 
 ### Still not in repo (intentionally)
 
@@ -77,13 +98,18 @@ Copy local overrides from a secure backup:
 
 Never commit API keys, tokens, or credential files. Use `*.example` and `*.local` files for machine-specific values.
 
+- **cursor-agent.nvim** reads `CURSOR_API_KEY` from the environment only (never hardcode in Lua).
+- If a key was ever committed, rotate it at [cursor.com/dashboard](https://cursor.com/dashboard) (Service Accounts) and update `~/.zshrc.local`.
+- Run `./scripts/setup-local-secrets.sh` on a new machine to add the local env template.
+
 ## Install
 
 ```bash
 git clone https://github.com/kienmac2k/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-chmod +x bootstrap.sh
+chmod +x bootstrap.sh scripts/*.sh
 ./bootstrap.sh
+./scripts/setup-local-secrets.sh
 ```
 
 ```bash
@@ -97,4 +123,4 @@ Open `nvim` once; Lazy.nvim installs plugins. `lazy-lock.json` is gitignored per
 
 ## License
 
-Private dotfiles — use at your own risk.
+Public dotfiles — use at your own risk.
