@@ -42,10 +42,6 @@ if test -f $_local_config
     source $_local_config
 end
 
-# Node Version Manager Variable
-set -gx NVM_DIR "$HOME/.nvm"
-
-
 # =============================================================================
 # 2. INTERACTIVE-ONLY INIT (Faster non-interactive shells)
 # =============================================================================
@@ -78,5 +74,10 @@ if status is-interactive
     
     # Move "Clear Screen" to Alt+L so you don't lose the ability to clear your terminal
     bind \el 'clear; commandline -f repaint'   
+
+    # brew shellenv runs after conf.d/nvm.fish; keep nvm's node ahead of Homebrew's.
+    if set --query nvm_current_version
+        set --prepend PATH $nvm_data/$nvm_current_version/bin
+    end
     
 end

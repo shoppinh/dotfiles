@@ -2,6 +2,28 @@ set --query XDG_DATA_HOME || set --local XDG_DATA_HOME ~/.local/share
 set --query nvm_mirror || set --global nvm_mirror https://nodejs.org/dist
 set --query nvm_data || set --global nvm_data $XDG_DATA_HOME/nvm
 
+# Reuse Node versions installed by nvm-sh (zsh/bash) inside nvm.fish.
+if test -d $HOME/.nvm/versions/node
+    for ver_dir in $HOME/.nvm/versions/node/*
+        set --local ver (basename $ver_dir)
+        if not test -e $nvm_data/$ver
+            command ln -s $ver_dir $nvm_data/$ver
+        end
+    end
+end
+
+if not set --query nvm_default_version
+    set --global nvm_default_version v22.19.0
+end
+
+function __nvm_export_nvm_bin --on-variable nvm_current_version
+    if set --query nvm_current_version
+        set --global NVM_BIN $nvm_data/$nvm_current_version/bin
+    else
+        set --erase NVM_BIN
+    end
+end
+
 function _nvm_install --on-event nvm_install
     test ! -d $nvm_data && command mkdir -p $nvm_data
     echo "Downloading the Node distribution index..." 2>/dev/null
