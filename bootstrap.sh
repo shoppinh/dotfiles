@@ -26,6 +26,7 @@ echo
 link_file "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
+link_file "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
 
 link_file "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
 link_file "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"

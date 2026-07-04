@@ -44,6 +44,9 @@ id_ecdsa
 # Karabiner backups
 .config/karabiner/automatic_backups/
 
+# tmux plugin manager (installed locally)
+.tmux/plugins/
+
 # OS / editor junk
 .DS_Store
 *.swp

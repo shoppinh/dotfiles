@@ -13,6 +13,7 @@ Personal shell and editor configuration for macOS.
 | `.config/nvim/` | LazyVim-based Neovim setup |
 | `.config/starship.toml` | Starship prompt (Fish) |
 | `.config/karabiner/` | Keyboard remapping (macOS) |
+| `.tmux.conf` | tmux + TPM plugins, lazygit/cursor popups |
 
 ## Security
 
@@ -31,6 +32,7 @@ Use the `*.example` files for local-only overrides.
 - [Fish](https://fishshell.com/) + [Fisher](https://github.com/jorgebucaran/fisher)
 - [Neovim](https://neovim.io/) (LazyVim bootstraps plugins on first launch)
 - [Starship](https://starship.rs/), [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf)
+- [tmux](https://github.com/tmux/tmux) + [TPM](https://github.com/tmux-plugins/tpm) (`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`)
 
 ## Install
 
