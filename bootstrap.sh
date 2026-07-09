@@ -32,7 +32,15 @@ link_file "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
 link_file "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/.config/starship.toml" "$HOME/.config/starship.toml"
-link_file "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"
+# Karabiner must live outside ~/Documents — the privileged daemon cannot read
+# TCC-protected paths. Keep the live config in Library; seed from dotfiles on first setup.
+KARABINER_DEST="$HOME/Library/Application Support/org.pqrs/karabiner"
+mkdir -p "$(dirname "$KARABINER_DEST")"
+if [[ ! -f "$KARABINER_DEST/karabiner.json" ]]; then
+  echo "  seed: $DOTFILES_DIR/.config/karabiner -> $KARABINER_DEST"
+  rsync -a "$DOTFILES_DIR/.config/karabiner/" "$KARABINER_DEST/"
+fi
+link_file "$KARABINER_DEST" "$HOME/.config/karabiner"
 link_file "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
 link_file "$DOTFILES_DIR/.config/wezterm" "$HOME/.config/wezterm"
 link_file "$DOTFILES_DIR/.config/zed" "$HOME/.config/zed"
