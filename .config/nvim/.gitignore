@@ -6,3 +6,4 @@ debug
 foo.*
 *.log
 data
+your-folder-name/
