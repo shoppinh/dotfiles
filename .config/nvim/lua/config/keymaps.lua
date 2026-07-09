@@ -64,8 +64,14 @@ vim.keymap.set(modes, "<Right>", "<Nop>", { desc = "Disabled Arrow Right" })
 -- Run current Python file in a Snacks terminal
 vim.keymap.set("n", "<leader>cx", function()
   if vim.bo.filetype == "python" then
-    Snacks.terminal("python3 " .. vim.fn.expand("%:p"))
+    Snacks.terminal("python3 " .. vim.fn.shellescape(vim.fn.expand("%:p")))
   else
     vim.notify("Not a Python file", vim.log.levels.WARN)
   end
 end, { desc = "Run Python File" })
+
+-- Meta (Alt) key navigation for compact keyboards (DAP)
+vim.keymap.set("n", "<M-j>", function() require("dap").step_over() end, { desc = "Debug: Step Over" })
+vim.keymap.set("n", "<M-l>", function() require("dap").step_into() end, { desc = "Debug: Step Into" })
+vim.keymap.set("n", "<M-h>", function() require("dap").step_out() end, { desc = "Debug: Step Out" })
+vim.keymap.set("n", "<M-c>", function() require("dap").continue() end, { desc = "Debug: Start/Continue" })

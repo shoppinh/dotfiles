@@ -53,3 +53,5 @@ vim.filetype.add({
 vim.g.lazyvim_prettier_needs_config = true
 vim.g.lazyvim_picker = "snacks"
 vim.g.lazyvim_cmp = "blink.cmp"
+vim.g.lazyvim_python_lsp = "basedpyright"
+

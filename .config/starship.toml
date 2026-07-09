@@ -1,3 +1,6 @@
+scan_timeout = 120
+command_timeout = 500
+
 [git_branch]
 symbol = " "
 style = "bold purple"

@@ -13,8 +13,13 @@ set -gx VISUAL nvim
 set fish_greeting ""
 
 # Android SDK Environment Variables
-set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
-set -gx ANDROID_SDK_ROOT "$HOME/Library/Android/sdk"
+if test (uname) = "Darwin"
+    set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
+    set -gx ANDROID_SDK_ROOT "$HOME/Library/Android/sdk"
+else
+    set -gx ANDROID_HOME "$HOME/Android/Sdk"
+    set -gx ANDROID_SDK_ROOT "$HOME/Android/Sdk"
+end
 
 # Add custom application binaries and local binaries to path safely
 fish_add_path /usr/local/app/bin
