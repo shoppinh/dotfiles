@@ -111,12 +111,15 @@ Open with `<leader>Tp` or `:TurboLogPanel`. Bottom split UI (similar to LazyVim 
 | Key | Action |
 |---|---|
 | `<CR>` / `l` | Jump to log location |
-| `d` | Delete log |
-| `c` | Comment log |
-| `u` | Uncomment log |
-| `x` | Correct log |
+| `d` / `dd` / `D` | Delete selected log(s) from source |
+| `c` | Comment selected log(s) |
+| `u` | Uncomment selected log(s) |
+| `x` | Correct selected log(s) |
 | `/` | Filter by text or filename |
+| `?` | Show help |
 | `q` | Close panel |
+
+Focus the panel first (`<Tab>` or click it), move to a log line (not the file header), then press the action key. Visual-select multiple lines to act on several logs at once.
 
 ## Configuration
 

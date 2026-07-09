@@ -246,6 +246,8 @@ function M.buffer_workspace_entries(buf, path)
       display_path = paths.display(path),
       lnum = item.lnum,
       line = item.line,
+      start_lnum = item.start_lnum,
+      end_lnum = item.end_lnum,
     }
   end
   return entries

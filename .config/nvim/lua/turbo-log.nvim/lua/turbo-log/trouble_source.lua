@@ -11,10 +11,8 @@ M.highlights = {
   ItemSource = "Comment",
 }
 
-local function action_on_item(action)
-  return function(view, ctx)
-    panel_actions.run_on_item(ctx.item, action, view)
-  end
+local function action_on_item(action, desc)
+  return panel_actions.run_on_item(action, desc)
 end
 
 M.config = {
@@ -41,10 +39,13 @@ M.config = {
         position = "bottom",
       },
       keys = {
-        d = { action = action_on_item(panel_actions.delete_entry), desc = "Delete log" },
-        c = { action = action_on_item(panel_actions.comment_entry), desc = "Comment log" },
-        u = { action = action_on_item(panel_actions.uncomment_entry), desc = "Uncomment log" },
-        x = { action = action_on_item(panel_actions.correct_entry), desc = "Correct log" },
+        d = { action = action_on_item(panel_actions.delete_entry, "deleted"), desc = "Delete log" },
+        dd = { action = action_on_item(panel_actions.delete_entry, "deleted"), desc = "Delete log" },
+        D = { action = action_on_item(panel_actions.delete_entry, "deleted"), desc = "Delete log" },
+        c = { action = action_on_item(panel_actions.comment_entry, "commented"), desc = "Comment log" },
+        u = { action = action_on_item(panel_actions.uncomment_entry, "uncommented"), desc = "Uncomment log" },
+        x = { action = action_on_item(panel_actions.correct_entry, "corrected"), desc = "Correct log" },
+        delete = false,
         ["/"] = {
           action = function(view)
             vim.ui.input({ prompt = "Filter: " }, function(input)

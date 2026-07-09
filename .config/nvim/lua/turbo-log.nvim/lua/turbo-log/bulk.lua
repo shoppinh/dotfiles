@@ -105,6 +105,57 @@ function M.delete_all(buf)
   end
 end
 
+local function correct_group_range(buf, ft, g)
+  local line = vim.api.nvim_buf_get_lines(buf, g.content_lnum - 1, g.content_lnum, false)[1] or ""
+  local uncommented = uncomment_line(line, ft)
+  local var = detect.extract_var(uncommented, ft)
+  if not var then
+    return false
+  end
+
+  local method = detect.extract_method(uncommented, ft)
+  local ctx = context.get(buf, g.content_lnum - 1, 0, ft)
+  local indent = line:match("^(%s*)") or ""
+  local built = message.build_lines(method, var, ctx, g.content_lnum, ft)
+  local new_lines = {}
+  for _, built_line in ipairs(built) do
+    local out = indent .. built_line
+    if vim.trim(line) ~= uncommented then
+      out = comment_line(out, ft)
+    end
+    new_lines[#new_lines + 1] = out
+  end
+
+  vim.api.nvim_buf_set_lines(buf, g.start_lnum - 1, g.end_lnum, false, new_lines)
+  return true
+end
+
+function M.correct_group(buf, entry)
+  local guarded, ft = guard_buf(buf)
+  if not guarded then
+    return false
+  end
+  buf = guarded
+  entry = entry or {}
+
+  if entry.start_lnum and entry.end_lnum then
+    return correct_group_range(buf, ft, {
+      start_lnum = entry.start_lnum,
+      end_lnum = entry.end_lnum,
+      content_lnum = entry.lnum,
+    })
+  end
+
+  for _, g in ipairs(detect.log_groups(buf)) do
+    if g.content_lnum == entry.lnum or (entry.lnum and entry.lnum >= g.start_lnum and entry.lnum <= g.end_lnum) then
+      return correct_group_range(buf, ft, g)
+    end
+  end
+
+  vim.notify("turbo-log: could not locate log in buffer", vim.log.levels.WARN)
+  return false
+end
+
 function M.correct_all(buf)
   local guarded, ft = guard_buf(buf)
   if not guarded then
@@ -114,26 +165,7 @@ function M.correct_all(buf)
   local groups = detect.log_groups(buf)
 
   for i = #groups, 1, -1 do
-    local g = groups[i]
-    local line = vim.api.nvim_buf_get_lines(buf, g.content_lnum - 1, g.content_lnum, false)[1] or ""
-    local uncommented = uncomment_line(line, ft)
-    local var = detect.extract_var(uncommented, ft)
-    if var then
-      local method = detect.extract_method(uncommented, ft)
-      local ctx = context.get(buf, g.content_lnum - 1, 0, ft)
-      local indent = line:match("^(%s*)") or ""
-      local built = message.build_lines(method, var, ctx, g.content_lnum, ft)
-      local new_lines = {}
-      for _, built_line in ipairs(built) do
-        local out = indent .. built_line
-        if vim.trim(line) ~= uncommented then
-          out = comment_line(out, ft)
-        end
-        new_lines[#new_lines + 1] = out
-      end
-
-      vim.api.nvim_buf_set_lines(buf, g.start_lnum - 1, g.end_lnum, false, new_lines)
-    end
+    correct_group_range(buf, ft, groups[i])
   end
 end
 

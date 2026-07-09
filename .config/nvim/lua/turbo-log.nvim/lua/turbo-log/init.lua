@@ -87,9 +87,20 @@ local function setup_commands()
   vim.api.nvim_create_user_command("TurboLogFind", panel.find, {})
 end
 
+local function register_trouble_source()
+  pcall(require, "trouble")
+  return require("turbo-log.trouble_source").register()
+end
+
 function M.setup(opts)
   config.setup(opts)
-  require("turbo-log.trouble_source").register()
+  register_trouble_source()
+  vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("TurboLogTrouble", { clear = true }),
+    pattern = "LazyDone",
+    callback = register_trouble_source,
+    once = true,
+  })
   setup_commands()
   if config.get().setup_keymaps then
     setup_keymaps()
