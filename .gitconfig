@@ -16,7 +16,7 @@
 	root = ~/.ghq
 
 [credential]
-	helper = !~/Dev/dotfiles/scripts/git-credential-helper.sh
+	helper = !~/scripts/git-credential-helper.sh
 
 # Personal name/email live in ~/.gitconfig.local (not committed)
 [include]

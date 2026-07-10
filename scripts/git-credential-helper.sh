@@ -30,7 +30,7 @@ elif is_wsl && is_interop_working; then
         echo "$input" | git credential-cache "$@"
     fi
 elif is_mac; then
-    echo "$input" | git-credential-osxkeychain "$@"
+    echo "$input" | git credential-osxkeychain "$@"
 else
     # Standard Linux / WSL with interop disabled
     if command -v git-credential-manager >/dev/null 2>&1 && [[ -n "${GCM_CREDENTIAL_STORE:-}" || "$(git config --global credential.credentialStore || true)" != "" ]]; then
