@@ -23,5 +23,6 @@
 	path = ~/.gitconfig.local
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+
 [pull]
 	rebase = true

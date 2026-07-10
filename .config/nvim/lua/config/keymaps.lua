@@ -34,9 +34,6 @@ map({ "n", "v" }, "<leader>D", '"_d')
 -- as the yank-history picker in n+x modes
 map("x", "<leader>P", [["_dP]], { desc = "Paste over selection (no yank)" })
 -- Reload current config file
-map("n", "<leader><leader>", function()
-  vim.cmd("so")
-end, { desc = "Source current file" })
 -------------------------------------------------------------------
 -- Personal namespace: <leader>o ("own")
 -- All non-LazyVim, non-collision-checked binds live here going forward.
