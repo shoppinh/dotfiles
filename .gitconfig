@@ -1,5 +1,5 @@
 [core]
-	editor = nvim
+	editor = vim
 	ignorecase = false
 	excludesfile = ~/.config/git/ignore
 
