@@ -39,6 +39,7 @@ link_file "$DOTFILES_DIR/.config/lazygit" "$HOME/.config/lazygit"
 link_file "$DOTFILES_DIR/.config/mise/config.toml" "$HOME/.config/mise/config.toml"
 link_file "$DOTFILES_DIR/.config/git/ignore" "$HOME/.config/git/ignore"
 link_file "$DOTFILES_DIR/.alacritty.toml" "$HOME/.alacritty.toml"
+link_file "$DOTFILES_DIR/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   link_file "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"

@@ -1,8 +1,5 @@
 return {
   {
-    "eandrju/cellular-automaton.nvim",
-  },
-  {
     "folke/snacks.nvim",
     opts = {
       picker = {
@@ -50,6 +47,12 @@ return {
     "lewis6991/gitsigns.nvim",
     opts = {
       current_line_blame = true,
+    },
+  },
+  {
+    "mbbill/undotree",
+    keys = {
+      { "<leader>ou", "<cmd>UndotreeToggle<cr>", desc = "Toggle UndoTree" },
     },
   },
 }

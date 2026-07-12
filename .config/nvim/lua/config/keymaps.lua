@@ -22,6 +22,8 @@ map("i", "<C-c>", "<Esc>")
 map("n", "Q", "<nop>")
 -- LSP restart (no collision)
 map("n", "<leader>zig", "<cmd>LspRestart<cr>")
+-- Tmux sessionizer
+map("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<cr>", { desc = "Open tmux-sessionizer" })
 -- Clipboard yank
 map({ "n", "v" }, "<leader>y", [["+y]])
 map("n", "<leader>Y", [["+Y]])
@@ -49,6 +51,19 @@ map(
 map("n", "<leader>ox", "<cmd>!chmod +x %<CR>", { silent = true, desc = "chmod +x current file" })
 -- Cellular automaton rain (was <leader>ca — collided with LSP Code Action)
 map("n", "<leader>oa", function()
+  local ft = vim.bo.filetype
+  if ft == "" then
+    vim.notify("Open a file first (dashboard has no tree-sitter parser)", vim.log.levels.WARN)
+    return
+  end
+  local lang = vim.treesitter.language.get_lang(ft) or ft
+  if not pcall(vim.treesitter.language.inspect, lang) then
+    vim.notify("No tree-sitter parser for filetype: " .. ft, vim.log.levels.WARN)
+    return
+  end
+  if not vim.treesitter.get_parser(0, lang, { error = false }) then
+    pcall(vim.treesitter.start, 0, lang)
+  end
   require("cellular-automaton").start_animation("make_it_rain")
 end, { desc = "Cellular Automaton: Rain" })
 local modes = { "n", "i", "v", "x", "s", "o", "t" }
