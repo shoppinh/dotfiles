@@ -18,10 +18,6 @@ id_ecdsa
 **/*token*
 **/.claude/*.local.json
 
-# SketchyBar local / build artifacts
-.config/sketchybar/helper/helper
-.config/sketchybar/data/custom-notification.txt
-.config/sketchybar/data/youtube-banner.txt
 
 # Local profile overrides
 .gitconfig.local

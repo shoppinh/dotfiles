@@ -1,4 +1,4 @@
-#!/usr/bin/env 
+#!/usr/bin/env
 
 yabai -m config layout stack
 
@@ -15,4 +15,3 @@ yabai -m config window_opacity  off
 # Exclude floating system apps from the stack
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Raycast$"         manage=off
-yabai -m rule --add app="^SketchyBar$"      manage=off

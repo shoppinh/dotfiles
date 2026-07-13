@@ -33,7 +33,6 @@ link_file "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
 link_file "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link_file "$DOTFILES_DIR/.config/starship.toml" "$HOME/.config/starship.toml"
 link_file "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
-link_file "$DOTFILES_DIR/.config/wezterm" "$HOME/.config/wezterm"
 link_file "$DOTFILES_DIR/.config/zed" "$HOME/.config/zed"
 link_file "$DOTFILES_DIR/.config/lazygit" "$HOME/.config/lazygit"
 link_file "$DOTFILES_DIR/.config/mise/config.toml" "$HOME/.config/mise/config.toml"
@@ -43,8 +42,6 @@ link_file "$DOTFILES_DIR/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessio
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   link_file "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"
-  link_file "$DOTFILES_DIR/.config/sketchybar" "$HOME/.config/sketchybar"
-  link_file "$DOTFILES_DIR/.config/skhd" "$HOME/.config/skhd"
   link_file "$DOTFILES_DIR/.config/yabai" "$HOME/.config/yabai"
 fi
 
@@ -104,4 +101,3 @@ fi
 
 echo
 echo "Done. Restart your shell or run: exec fish / exec zsh"
-echo "SketchyBar: brew services restart sketchybar (after brew install sketchybar)"

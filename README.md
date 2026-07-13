@@ -18,12 +18,9 @@ Personal shell and editor configuration for macOS.
 | `.config/karabiner/` | Keyboard remapping (macOS) |
 | `.config/kitty/` | Kitty terminal (Tokyo Night theme) |
 | `.config/ghostty/` | Ghostty terminal (symlinked to Application Support on macOS) |
-| `.config/wezterm/` | WezTerm terminal |
 | `.alacritty.toml` | Alacritty terminal (minimal) |
 | `.config/zed/settings.json` | Zed editor |
-| `.config/skhd/` | Global hotkeys for yabai |
 | `.config/yabai/` | Tiling window manager |
-| `.config/sketchybar/` | Menu bar (FelixKratz config, Tokyo Night colors) |
 | `.config/lazygit/` | lazygit TUI config |
 | `.config/mise/` | mise runtime versions |
 | `.tmux.conf` | tmux + TPM plugins, lazygit/cursor popups |
@@ -64,7 +61,7 @@ Install separately if not already present:
 |------|---------|
 | Homebrew | Standard install (before bootstrap for Brewfile) |
 | Oh My Zsh | [ohmyz.sh](https://ohmyz.sh/) — then re-run bootstrap or `./scripts/install-omz-plugins.sh` |
-| yabai + skhd + SketchyBar | Accessibility permissions after brew install |
+| yabai | Accessibility permissions after brew install |
 | gh auth | `gh auth login` |
 | Neovim | Your preferred install path (Homebrew, mise, etc.) |
 | Kitty / Ghostty | Optional terminals (configs included) |
