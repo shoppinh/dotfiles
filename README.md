@@ -8,9 +8,8 @@ Personal shell and editor configuration for macOS.
 |------|-------------|
 | `.gitconfig` | Git defaults (name/email in local override) |
 | `.config/git/ignore` | Global gitignore (e.g. Claude local settings) |
-| `.zshrc` | Oh My Zsh + Powerlevel10k + Starship |
+| `.zshrc` | Oh My Zsh + Starship prompt |
 | `.zprofile` | Login shell paths (sources `~/.zprofile.local`) |
-| `.p10k.zsh` | Powerlevel10k prompt theme |
 | `.config/fish/` | Fish shell + **Fisher** plugins (see below) |
 | `.config/fish/fish_plugins` | Fisher plugin list (not oh-my-fish) |
 | `.config/nvim/` | LazyVim-based Neovim setup |
@@ -18,14 +17,13 @@ Personal shell and editor configuration for macOS.
 | `.config/karabiner/` | Keyboard remapping (macOS) |
 | `.config/kitty/` | Kitty terminal (Tokyo Night theme) |
 | `.config/ghostty/` | Ghostty terminal (symlinked to Application Support on macOS) |
-| `.alacritty.toml` | Alacritty terminal (minimal) |
 | `.config/zed/settings.json` | Zed editor |
 | `.config/yabai/` | Tiling window manager |
 | `.config/lazygit/` | lazygit TUI config |
 | `.config/mise/` | mise runtime versions |
 | `.tmux.conf` | tmux + TPM plugins, lazygit/cursor popups |
 | `Brewfile` | Homebrew dependencies for a fresh Mac |
-| `scripts/install-omz-plugins.sh` | Oh My Zsh plugins + Powerlevel10k theme |
+| `scripts/install-omz-plugins.sh` | Oh My Zsh plugins |
 
 ## Fish plugins (Fisher, not oh-my-fish)
 

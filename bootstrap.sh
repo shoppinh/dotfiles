@@ -26,7 +26,6 @@ echo
 link_file "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 link_file "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/.zprofile" "$HOME/.zprofile"
-link_file "$DOTFILES_DIR/.p10k.zsh" "$HOME/.p10k.zsh"
 link_file "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
 
 link_file "$DOTFILES_DIR/.config/fish" "$HOME/.config/fish"
@@ -37,7 +36,6 @@ link_file "$DOTFILES_DIR/.config/zed" "$HOME/.config/zed"
 link_file "$DOTFILES_DIR/.config/lazygit" "$HOME/.config/lazygit"
 link_file "$DOTFILES_DIR/.config/mise/config.toml" "$HOME/.config/mise/config.toml"
 link_file "$DOTFILES_DIR/.config/git/ignore" "$HOME/.config/git/ignore"
-link_file "$DOTFILES_DIR/.alacritty.toml" "$HOME/.alacritty.toml"
 link_file "$DOTFILES_DIR/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
