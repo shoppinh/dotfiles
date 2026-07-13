@@ -1,5 +1,4 @@
 # Core dotfiles dependencies (run: brew bundle --file=~/dotfiles/Brewfile)
-tap "felixkratz/formulae"
 
 brew "bat"
 brew "eza"
@@ -15,8 +14,6 @@ brew "tmux"
 brew "yabai"
 brew "zoxide"
 brew "zsh"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
 
 cask "karabiner-elements"
 cask "font-jetbrains-mono-nerd-font"
