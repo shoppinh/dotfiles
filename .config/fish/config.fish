@@ -65,11 +65,7 @@ if status is-interactive
     # Initialize Starship Prompt and Zoxide
     starship init fish | source
     zoxide init fish --cmd z | source
-
-    # Initialize rbenv (Ruby Environment Manager)
-    if type -q rbenv
-        rbenv init - fish | source
-    end
+    mise activate fish | source
 
     # Key Bindings & Fuzzy Finder Configurations
     fzf_configure_bindings --directory=\e\cf

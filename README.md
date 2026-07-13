@@ -32,9 +32,7 @@ This repo uses **[Fisher](https://github.com/jorgebucaran/fisher)**, not oh-my-f
 - `jorgebucaran/fisher`
 - `patrickf1/fzf.fish`
 - `jhillyerd/plugin-git`
-- `jethrokuan/z`
 - `jorgebucaran/autopair.fish`
-- `jorgebucaran/nvm.fish`
 
 `bootstrap.sh` runs `fish -c 'fisher update'` after symlinking. On a fresh machine, install Fish first (`brew install fish`), then bootstrap.
 

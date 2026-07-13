@@ -21,6 +21,7 @@ export ZSH_CUSTOM="$ZSH/custom"
 fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src $fpath)
 
 eval "$(zoxide init zsh)"
+eval "$(mise activate zsh)"
 
 export VISUAL="nvim"
 export EDITOR="nvim"

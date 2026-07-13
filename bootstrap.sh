@@ -97,5 +97,11 @@ if command -v fish >/dev/null 2>&1; then
   fi
 fi
 
+if command -v mise >/dev/null 2>&1; then
+  echo
+  echo "Installing Mise runtimes..."
+  mise install
+fi
+
 echo
 echo "Done. Restart your shell or run: exec fish / exec zsh"
