@@ -35,12 +35,10 @@ clone_theme() {
   git clone --depth=1 "$repo" "$dest"
 }
 
-echo "Installing Oh My Zsh plugins and themes..."
-clone_theme "powerlevel10k" "https://github.com/romkatv/powerlevel10k.git"
+echo "Installing Oh My Zsh plugins..."
 clone_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions"
 clone_plugin "zsh-completions" "https://github.com/zsh-users/zsh-completions"
 clone_plugin "zsh-history-substring-search" "https://github.com/zsh-users/zsh-history-substring-search"
 clone_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting"
-clone_plugin "alias-tips" "https://github.com/djui/alias-tips"
 clone_plugin "fzf-tab" "https://github.com/Aloxaf/fzf-tab"
 echo "Done."
