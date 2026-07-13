@@ -11,7 +11,7 @@ brew "mise"
 brew "ripgrep"
 brew "starship"
 brew "tmux"
-brew "yabai"
+brew "koekeishiya/formulae/yabai"
 brew "zoxide"
 brew "zsh"
 
