@@ -21,20 +21,6 @@ clone_plugin() {
   git clone --depth=1 "$repo" "$dest"
 }
 
-clone_theme() {
-  local name="$1"
-  local repo="$2"
-  local dest="$ZSH_CUSTOM/themes/$name"
-
-  if [[ -d "$dest/.git" ]]; then
-    echo "  ok: $name (theme)"
-    return
-  fi
-
-  echo "  clone: $name (theme)"
-  git clone --depth=1 "$repo" "$dest"
-}
-
 echo "Installing Oh My Zsh plugins..."
 clone_plugin "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions"
 clone_plugin "zsh-completions" "https://github.com/zsh-users/zsh-completions"
