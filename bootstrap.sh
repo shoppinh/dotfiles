@@ -88,12 +88,13 @@ fi
 if command -v fish >/dev/null 2>&1; then
   echo
   echo "Installing Fish plugins (Fisher)..."
+  fisher_cmd='if test -f ~/.config/fish/fish_plugins; if not set -q _fisher_plugins; set -U _fisher_plugins (string match -r -v '\''^\s*#|^\s*$'\'' < ~/.config/fish/fish_plugins); end; fisher update; else; echo "  (no fish_plugins file found; skipping fisher update)"; end'
   if command -v gtimeout >/dev/null 2>&1; then
-    gtimeout 120 fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually)"
+    gtimeout 120 fish -c "$fisher_cmd" || echo "  (run \`fish -c fisher update\` manually)"
   elif command -v timeout >/dev/null 2>&1; then
-    timeout 120 fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually)"
+    timeout 120 fish -c "$fisher_cmd" || echo "  (run \`fish -c fisher update\` manually)"
   else
-    fish -c 'fisher update' || echo "  (run \`fish -c fisher update\` manually if this failed)"
+    fish -c "$fisher_cmd" || echo "  (run \`fish -c fisher update\` manually if this failed)"
   fi
 fi
 
