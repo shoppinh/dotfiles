@@ -19,6 +19,27 @@ link_file() {
   echo "  link: $dest -> $src"
 }
 
+# Karabiner-Elements cannot reliably persist keyboard_type / profiles when
+# ~/.config/karabiner is a symlink (especially into Documents/iCloud). Copy
+# instead of linking so settings stick across restarts.
+copy_dir() {
+  local src="$1"
+  local dest="$2"
+
+  if [[ -L "$dest" ]]; then
+    mkdir -p "$BACKUP_DIR"
+    echo "  backup symlink: $dest -> $BACKUP_DIR/"
+    mv "$dest" "$BACKUP_DIR/"
+  elif [[ -d "$dest" ]]; then
+    echo "  keep existing: $dest (already a real directory)"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$dest")"
+  cp -R "$src" "$dest"
+  echo "  copy: $src -> $dest"
+}
+
 echo "Dotfiles dir: $DOTFILES_DIR"
 echo "Backups:      $BACKUP_DIR"
 echo
@@ -39,7 +60,7 @@ link_file "$DOTFILES_DIR/.config/git/ignore" "$HOME/.config/git/ignore"
 link_file "$DOTFILES_DIR/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  link_file "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"
+  copy_dir "$DOTFILES_DIR/.config/karabiner" "$HOME/.config/karabiner"
   link_file "$DOTFILES_DIR/.config/yabai" "$HOME/.config/yabai"
 fi
 

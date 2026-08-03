@@ -14,7 +14,7 @@ Personal shell and editor configuration for macOS.
 | `.config/fish/fish_plugins` | Fisher plugin list (not oh-my-fish) |
 | `.config/nvim/` | LazyVim-based Neovim setup |
 | `.config/starship.toml` | Starship prompt (Fish) |
-| `.config/karabiner/` | Keyboard remapping (macOS) |
+| `.config/karabiner/` | Keyboard remapping (macOS; copied, not symlinked — see folder note) |
 | `.config/kitty/` | Kitty terminal (Tokyo Night theme) |
 | `.config/ghostty/` | Ghostty terminal (symlinked to Application Support on macOS) |
 | `.config/zed/settings.json` | Zed editor |

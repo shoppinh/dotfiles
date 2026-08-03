@@ -35,7 +35,6 @@ map({ "n", "v" }, "<leader>D", '"_d')
 -- Relocated off <leader>p — yanky.nvim (coding.yanky extra) owns <leader>p
 -- as the yank-history picker in n+x modes
 map("x", "<leader>P", [["_dP]], { desc = "Paste over selection (no yank)" })
--- Reload current config file
 -------------------------------------------------------------------
 -- Personal namespace: <leader>o ("own")
 -- All non-LazyVim, non-collision-checked binds live here going forward.
@@ -81,6 +80,22 @@ vim.keymap.set("n", "<leader>cx", function()
     vim.notify("Not a Python file", vim.log.levels.WARN)
   end
 end, { desc = "Run Python File" })
+
+-- Open current HTML file in the default browser (macOS)
+local function open_html_file()
+  local path = vim.fn.expand("%:p")
+  if path == "" then
+    vim.notify("No file to open", vim.log.levels.WARN)
+    return
+  end
+  if vim.bo.filetype ~= "html" and not path:match("%.html?$") then
+    vim.notify("Not an HTML file", vim.log.levels.WARN)
+    return
+  end
+  vim.fn.jobstart({ "open", path }, { detach = true })
+end
+
+vim.keymap.set("n", "<leader>ch", open_html_file, { desc = "Open HTML in browser" })
 
 -- Meta (Alt) key navigation for compact keyboards (DAP)
 vim.keymap.set("n", "<M-j>", function() require("dap").step_over() end, { desc = "Debug: Step Over" })
