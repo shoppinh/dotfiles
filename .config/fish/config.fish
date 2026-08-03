@@ -69,12 +69,9 @@ if status is-interactive
 
     # Key Bindings & Fuzzy Finder Configurations
     fzf_configure_bindings --directory=\e\cf
-    
-    # Map Ctrl+L to accept your auto-suggestions
-    bind \cl accept-autosuggestion
-    
-    # Move "Clear Screen" to Alt+L so you don't lose the ability to clear your terminal
-    bind \el 'clear; commandline -f repaint'   
-
+    # .NET 10 Environment Variables
+    set -gx DOTNET_ROOT $HOME/.dotnet
+    fish_add_path --prepend $HOME/.dotnet
+    fish_add_path --prepend $HOME/.dotnet/tools
     
 end
