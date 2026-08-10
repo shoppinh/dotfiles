@@ -27,8 +27,16 @@ local function panel_opts()
   }
 end
 
-function M.open()
+local function ensure_trouble_ready()
   if not has_trouble() then
+    return false
+  end
+  require("turbo-log.trouble_treesitter_patch").apply()
+  return true
+end
+
+function M.open()
+  if not ensure_trouble_ready() then
     vim.notify("turbo-log: trouble.nvim is required for the log panel", vim.log.levels.ERROR)
     return
   end
@@ -43,7 +51,7 @@ function M.close()
 end
 
 function M.toggle()
-  if not has_trouble() then
+  if not ensure_trouble_ready() then
     vim.notify("turbo-log: trouble.nvim is required for the log panel", vim.log.levels.ERROR)
     return
   end
@@ -51,6 +59,7 @@ function M.toggle()
 end
 
 function M.find()
+  require("turbo-log.trouble_treesitter_patch").apply()
   local ok, snacks = pcall(require, "snacks.picker")
   if ok and snacks and snacks.grep then
     snacks.grep({

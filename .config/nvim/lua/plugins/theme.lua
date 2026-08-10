@@ -2,11 +2,11 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "oxocarbon",
+      colorscheme = "material-darker",
     },
   },
   {
-    "morhetz/gruvbox",
+    "ellisonleao/gruvbox.nvim",
   },
   {
     "rebelot/kanagawa.nvim",
@@ -19,9 +19,6 @@ return {
   },
   {
     "EdenEast/nightfox.nvim",
-  },
-  {
-    "sainnhe/gruvbox-material",
   },
   {
     "olimorris/onedarkpro.nvim",

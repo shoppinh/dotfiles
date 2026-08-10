@@ -13,6 +13,14 @@ return {
       },
     },
   },
+  -- Neovim 0.12 removed highlighter._on_line; trouble <=3.7.1 still registers it.
+  -- Pin past the on_range fix until a tagged release ships it.
+  {
+    "folke/trouble.nvim",
+    version = false,
+    commit = "bd67efe408d4816e25e8491cc5ad4088e708a69a",
+    pin = true,
+  },
   {
     "mikavilpas/yazi.nvim",
     dependencies = { "folke/snacks.nvim" },

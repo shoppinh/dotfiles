@@ -89,6 +89,7 @@ end
 
 local function register_trouble_source()
   pcall(require, "trouble")
+  require("turbo-log.trouble_treesitter_patch").apply()
   return require("turbo-log.trouble_source").register()
 end
 

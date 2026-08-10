@@ -56,3 +56,7 @@ eval "$(starship init zsh)"
 
 # Machine-specific overrides (not committed)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/kien.mac/.local/bin:$PATH"

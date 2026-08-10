@@ -75,3 +75,7 @@ if status is-interactive
     fish_add_path --prepend $HOME/.dotnet/tools
     
 end
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/Users/kien.mac/.local/bin" $PATH
