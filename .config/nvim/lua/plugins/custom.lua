@@ -42,6 +42,12 @@ return {
     config = true,
   },
   {
+    "folke/trouble.nvim",
+    version = false,
+    commit = "bd67efe408d4816e25e8491cc5ad4088e708a69a",
+    pin = true,
+  },
+  {
     "folke/which-key.nvim",
     opts = {
       spec = {
