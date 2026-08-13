@@ -9,6 +9,18 @@ return {
           files = {
             hidden = true,
           },
+          explorer = {
+            watch = false,
+          },
+          notifications = {
+            win = {
+              input = {
+                keys = {
+                  ["<C-y>"] = { "yank", mode = { "i", "n" } },
+                },
+              },
+            },
+          },
         },
       },
     },
