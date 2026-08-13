@@ -12,3 +12,13 @@ autocmd("BufWritePre", {
   pattern = "*",
   command = [[%s/\s\+$//e]],
 })
+
+-- Reset cursor shape and blinking on exit/suspend
+autocmd({ "VimLeave", "VimSuspend" }, {
+  group = own_group,
+  callback = function()
+    vim.opt.guicursor = ""
+    vim.fn.chansend(vim.v.stderr, "\x1b[2 q")
+  end,
+})
+

@@ -1,7 +1,18 @@
+local function dotnet_root()
+  local dotnet = vim.fn.exepath("dotnet")
+  if dotnet == "" then
+    return "/usr/local/share/dotnet"
+  end
+  return vim.fn.fnamemodify(dotnet, ":h")
+end
+
 return {
   {
     "seblyng/roslyn.nvim",
     ft = { "cs" },
+    init = function()
+      vim.env.DOTNET_ROOT = dotnet_root()
+    end,
     opts = {
       -- Options passed to roslyn.nvim setup
     },
