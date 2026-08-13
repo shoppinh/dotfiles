@@ -1,5 +1,0 @@
-dofile(vim.fn.getcwd() .. "/tests/test_config.lua")
-dofile(vim.fn.getcwd() .. "/tests/test_utils.lua")
-dofile(vim.fn.getcwd() .. "/tests/test_api.lua")
-dofile(vim.fn.getcwd() .. "/tests/test_models.lua")
-print("\nAll cursor-agent tests completed.")

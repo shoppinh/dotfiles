@@ -91,10 +91,6 @@ chmod +x scripts/setup-local-env.sh
 
 Never commit API keys, tokens, or credential files. Use `*.example` and `*.local` files for machine-specific values.
 
-- **cursor-agent.nvim** reads `CURSOR_API_KEY` from the environment only (never hardcode in Lua).
-- If a key was ever committed, rotate it at [cursor.com/dashboard](https://cursor.com/dashboard) (Service Accounts) and update `~/.zshrc.local`.
-- Run `./scripts/setup-local-env.sh` on a new machine to add the local env template.
-
 ## Install
 
 ```bash
