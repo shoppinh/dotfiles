@@ -16,7 +16,7 @@ cursor-style = block
 cursor-style-blink = false
 shell-integration = fish
 # Explicit control; drop sudo if not needed
-shell-integration-features = cursor,sudo,title
+shell-integration-features = no-cursor,sudo,title
 mouse-hide-while-typing = true
 
 # --- Clipboard ---
