@@ -1,37 +1,44 @@
 return {
   "neovim/nvim-lspconfig",
-  opts = {
-    servers = {
-      omnisharp = { enabled = false },
-      ruff = {
-        init_options = {
-          settings = {
-            lint = {
-              enable = false,
-            },
-          },
+  opts = function(_, opts)
+    opts.servers = opts.servers or {}
+    opts.servers["*"] = opts.servers["*"] or {}
+    opts.servers["*"].capabilities = {
+      workspace = {
+        didChangeWatchedFiles = {
+          dynamicRegistration = false,
         },
       },
-      pyright = {
+    }
+    opts.servers.omnisharp = { enabled = false }
+    opts.servers.ruff = {
+      init_options = {
         settings = {
-          python = {
-            analysis = {
-              diagnosticMode = "openFilesOnly",
-            },
+          lint = {
+            enable = false,
           },
         },
       },
-      basedpyright = {
-        settings = {
-          basedpyright = {
-            analysis = {
-              diagnosticMode = "openFilesOnly",
-            },
+    }
+    opts.servers.pyright = {
+      settings = {
+        python = {
+          analysis = {
+            diagnosticMode = "openFilesOnly",
           },
         },
       },
-    },
-  },
+    }
+    opts.servers.basedpyright = {
+      settings = {
+        basedpyright = {
+          analysis = {
+            diagnosticMode = "openFilesOnly",
+          },
+        },
+      },
+    }
+  end,
 }
 
 

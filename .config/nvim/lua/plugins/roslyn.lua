@@ -12,10 +12,27 @@ return {
     ft = { "cs" },
     init = function()
       vim.env.DOTNET_ROOT = dotnet_root()
+      vim.env.DOTNET_gcServer = "0"
     end,
     opts = {
-      -- Options passed to roslyn.nvim setup
+      filewatching = "roslyn",
+      lock_target = true,
     },
+    config = function(_, opts)
+      require("roslyn").setup(opts)
+
+      vim.lsp.config("roslyn", {
+        settings = {
+          ["csharp|background_analysis"] = {
+            dotnet_analyzer_diagnostics_scope = "openFiles",
+            dotnet_compiler_diagnostics_scope = "openFiles",
+          },
+          ["csharp|symbol_search"] = {
+            dotnet_search_reference_assemblies = false,
+          },
+        },
+      })
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
