@@ -2,6 +2,7 @@
 return {
   {
     "eandrju/cellular-automaton.nvim",
+    lazy = true,
     config = function()
       local load_mod = require("cellular-automaton.load")
 

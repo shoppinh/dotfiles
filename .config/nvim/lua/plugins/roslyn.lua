@@ -3,13 +3,14 @@ local function dotnet_root()
   if dotnet == "" then
     return "/usr/local/share/dotnet"
   end
+  dotnet = vim.uv.fs_realpath(dotnet) or dotnet
   return vim.fn.fnamemodify(dotnet, ":h")
 end
 
 return {
   {
     "seblyng/roslyn.nvim",
-    ft = { "cs" },
+    ft = { "cs", "razor", "cshtml" },
     init = function()
       vim.env.DOTNET_ROOT = dotnet_root()
       vim.env.DOTNET_gcServer = "0"
@@ -22,6 +23,7 @@ return {
       require("roslyn").setup(opts)
 
       vim.lsp.config("roslyn", {
+        workspace_required = true,
         settings = {
           ["csharp|background_analysis"] = {
             dotnet_analyzer_diagnostics_scope = "openFiles",

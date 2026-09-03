@@ -40,6 +40,13 @@ return {
         desc = "Find Plugin File",
       },
       {
+        "<leader>fp",
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = "Projects",
+      },
+      {
         "<leader>fr",
         function()
           Snacks.picker.recent()
