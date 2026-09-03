@@ -76,6 +76,12 @@ if status is-interactive
     
 end
 
+# pnpm
+set -gx PNPM_HOME "/home/kienmac/.local/share/pnpm"
+if not string match -q -- "$PNPM_HOME/bin" $PATH
+  set -gx PATH "$PNPM_HOME/bin" $PATH
+end
+# pnpm end
 
-# Added by Antigravity CLI installer
-set -gx PATH "/Users/kien.mac/.local/bin" $PATH
+# Pi
+fish_add_path "/home/kienmac/.local/share/mise/installs/node/26.5.0/bin"
