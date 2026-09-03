@@ -12,7 +12,8 @@ Personal shell and editor configuration for macOS.
 | `.zprofile` | Login shell paths (sources `~/.zprofile.local`) |
 | `.config/fish/` | Fish shell + **Fisher** plugins (see below) |
 | `.config/fish/fish_plugins` | Fisher plugin list (not oh-my-fish) |
-| `.config/nvim/` | LazyVim-based Neovim setup |
+| `.config/nvim/` | LazyVim-based Neovim setup ([Keymaps Cheatsheet](docs/keymaps.md)) |
+| `docs/keymaps.md` | Complete Neovim keymaps cheatsheet |
 | `.config/starship.toml` | Starship prompt (Fish) |
 | `.config/karabiner/` | Keyboard remapping (macOS; copied, not symlinked — see folder note) |
 | `.config/kitty/` | Kitty terminal (Tokyo Night theme) |
