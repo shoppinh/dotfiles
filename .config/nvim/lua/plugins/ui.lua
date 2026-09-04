@@ -104,6 +104,11 @@ return {
     event = "BufReadPre",
     priority = 1200,
     config = function()
+      local incline_cursorline = "smart"
+      if vim.env.TMUX ~= nil then
+        incline_cursorline = false
+      end
+
       local function hl_color(group, attr)
         local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
         if not ok or not hl[attr] then
@@ -132,7 +137,7 @@ return {
           },
           window = { margin = { vertical = 0, horizontal = 1 } },
           hide = {
-            cursorline = true,
+            cursorline = incline_cursorline,
           },
           render = function(props)
             local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
