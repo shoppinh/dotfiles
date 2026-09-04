@@ -25,6 +25,54 @@ local cellular_spec =
 check(cellular_spec.lazy == true, "cellular-automaton.nvim must use lazy.nvim's module loader")
 
 local custom_specs = dofile(".config/nvim/lua/plugins/custom.lua")
+local trouble_spec_count = 0
+for _, plugin_spec in ipairs(custom_specs) do
+  if plugin_spec[1] == "folke/trouble.nvim" then
+    trouble_spec_count = trouble_spec_count + 1
+  end
+end
+check(trouble_spec_count == 1, "custom.lua must contain exactly one pinned Trouble spec")
+
+local performance_specs = dofile(".config/nvim/lua/plugins/performance.lua")
+
+local function resolved_events(spec)
+  if type(spec.event) == "function" then
+    return spec.event(spec, { "LazyFile" })
+  end
+  return type(spec.event) == "table" and spec.event or { spec.event }
+end
+
+local function check_very_lazy(name)
+  local spec = find_spec(performance_specs, name)
+  check(vim.deep_equal(resolved_events(spec), { "VeryLazy" }), name .. " must load only on VeryLazy")
+end
+
+local treesitter_spec = find_spec(performance_specs, "nvim-treesitter/nvim-treesitter")
+check(
+  treesitter_spec.opts and treesitter_spec.opts.folds and treesitter_spec.opts.folds.enable == false,
+  "Treesitter folds must be disabled"
+)
+
+local gitsigns_spec = find_spec(performance_specs, "lewis6991/gitsigns.nvim")
+check(gitsigns_spec.opts.current_line_blame == false, "Gitsigns current-line blame must default to disabled")
+check_very_lazy("lewis6991/gitsigns.nvim")
+check_very_lazy("nvim-treesitter/nvim-treesitter-context")
+check_very_lazy("gbprod/yanky.nvim")
+check_very_lazy("folke/todo-comments.nvim")
+check_very_lazy("nvim-mini/mini.hipatterns")
+
+local overrides_lint_loading = false
+for _, spec in ipairs(performance_specs) do
+  overrides_lint_loading = overrides_lint_loading or spec[1] == "mfussenegger/nvim-lint"
+end
+check(not overrides_lint_loading, "nvim-lint must retain LazyFile so the first buffer is linted")
+
+local autotag_spec = find_spec(performance_specs, "windwp/nvim-ts-autotag")
+check(vim.deep_equal(resolved_events(autotag_spec), {}), "nvim-ts-autotag must not retain the global LazyFile event")
+for _, filetype in ipairs({ "html", "typescriptreact", "svelte", "vue", "xml" }) do
+  check(vim.tbl_contains(autotag_spec.ft or {}, filetype), "nvim-ts-autotag missing supported filetype: " .. filetype)
+end
+
 local turbo_spec = find_spec(custom_specs, "kienmac2k/turbo-log.nvim")
 local expected_commands = {
   "TurboLogInsertLog",
@@ -98,6 +146,32 @@ end
 
 local git_conflict_spec = find_spec(custom_specs, "akinsho/git-conflict.nvim")
 check(git_conflict_spec.event == "BufReadPre", "git-conflict.nvim must load on BufReadPre")
+
+local ui_specs = dofile(".config/nvim/lua/plugins/ui.lua")
+local notify_spec = find_spec(ui_specs, "rcarriga/nvim-notify")
+check(notify_spec.event == "VeryLazy", "nvim-notify must load on VeryLazy")
+local incline_spec = find_spec(ui_specs, "b0o/incline.nvim")
+check(incline_spec.event == "VeryLazy", "incline.nvim must load on VeryLazy")
+
+local captured_lazy_opts
+local original_lazy = package.loaded.lazy
+package.loaded.lazy = {
+  setup = function(opts)
+    captured_lazy_opts = opts
+  end,
+}
+dofile(".config/nvim/lua/config/lazy.lua")
+package.loaded.lazy = original_lazy
+
+check(captured_lazy_opts.defaults.lazy == false, "global plugin lazy-loading default must stay disabled")
+check(
+  captured_lazy_opts.change_detection and captured_lazy_opts.change_detection.enabled == false,
+  "lazy.nvim change detection must be disabled"
+)
+check(
+  vim.tbl_contains(captured_lazy_opts.performance.rtp.disabled_plugins, "netrwPlugin"),
+  "netrwPlugin must be disabled"
+)
 
 local original_systemlist = vim.fn.systemlist
 local original_delete = vim.fn.delete

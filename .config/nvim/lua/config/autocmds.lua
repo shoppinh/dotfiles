@@ -27,7 +27,7 @@ autocmd({ "VimLeave", "VimSuspend" }, {
 -- ===================================================================
 local lsp_gc_group = augroup("LspGarbageCollector", { clear = true })
 local lsp_shutdown_timers = {} ---@type table<number, uv.uv_timer_t>
-local IDLE_TIMEOUT_MS = 10 * 60 * 1000 -- 10 minutes grace period
+local IDLE_TIMEOUT_MS = 3 * 60 * 1000 -- 3 minutes grace period
 
 local EXEMPT_CLIENTS = {
   copilot = true,

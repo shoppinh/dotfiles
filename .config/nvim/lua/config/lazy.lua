@@ -57,6 +57,10 @@ require("lazy").setup({
     enabled = false,
     notify = false,
   },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
   performance = {
     rtp = {
       -- disable some rtp plugins
@@ -64,7 +68,7 @@ require("lazy").setup({
         "gzip",
         -- "matchit",
         -- "matchparen",
-        -- "netrwPlugin",
+        "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",
