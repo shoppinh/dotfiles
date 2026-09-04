@@ -31,6 +31,7 @@ local opts = {
 
 spec.opts(nil, opts)
 
+assert(opts.folds and opts.folds.enabled == false)
 assert(opts.servers.pyright.enabled == false)
 assert(opts.servers.basedpyright.enabled == true)
 assert(opts.servers.ruff.enabled == true)

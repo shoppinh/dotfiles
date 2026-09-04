@@ -1,6 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   opts = function(_, opts)
+    opts.folds = { enabled = false }
     opts.servers = opts.servers or {}
     opts.servers.omnisharp = vim.tbl_deep_extend("force", opts.servers.omnisharp or {}, { enabled = false })
     opts.servers.basedpyright = vim.tbl_deep_extend("force", opts.servers.basedpyright or {}, {

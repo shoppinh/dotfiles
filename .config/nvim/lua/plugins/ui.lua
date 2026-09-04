@@ -55,6 +55,7 @@ return {
 
   {
     "rcarriga/nvim-notify",
+    event = "VeryLazy",
     opts = {
       timeout = 5000,
     },
@@ -100,7 +101,7 @@ return {
   -- filename
   {
     "b0o/incline.nvim",
-    event = "BufReadPre",
+    event = "VeryLazy",
     priority = 1200,
     config = function()
       local incline_cursorline = "smart"
