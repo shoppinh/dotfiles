@@ -2,7 +2,6 @@
 theme = TokyoNight Night
 font-family = "JetBrainsMono Nerd Font"
 font-size = 13
-# Wider gamut on Apple Silicon; revert to srgb if colours look oversaturated
 window-colorspace = display-p3
 background-opacity = 1
 background-blur-radius = 20
@@ -12,30 +11,23 @@ adjust-cell-height = 1%
 
 # --- Cursor & UX ---
 cursor-style = block
-# Eliminates visual noise in Neovim
-cursor-style-blink = false
 shell-integration = fish
-# Explicit control; drop sudo if not needed
 shell-integration-features = no-cursor,sudo,title
 mouse-hide-while-typing = true
 
 # --- Clipboard ---
 clipboard-read = allow
 clipboard-write = allow
-# Prevents trailing whitespace when pasting terminal output into editors
 clipboard-trim-trailing-spaces = true
 
 # --- Window Management ---
 window-padding-x = 10
 window-padding-y = 10
-# Equalises padding on both sides of a split
 window-padding-balance = true
 window-decoration = true
 window-save-state = default
-# New splits/tabs open in current pane's cwd
 window-inherit-working-directory = true
 window-inherit-font-size = true
-# Dim inactive splits for visual focus
 unfocused-split-opacity = 0.85
 
 # --- Keybindings (Vim-Friendly) ---
@@ -59,5 +51,4 @@ macos-option-as-alt = true
 
 # --- Performance ---
 scrollback-limit = 10000
-mouse-reporting = false
 scrollbar = never
