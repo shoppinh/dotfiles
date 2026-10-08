@@ -2,7 +2,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin-mocha",
+      colorscheme = "dark2026",
     },
   },
   {
@@ -92,4 +92,8 @@ return {
     "tiagovla/tokyodark.nvim",
     lazy = true,
   },
+  {
+    "D0nw0r/dark2026.nvim",
+    lazy = true,
+  }
 }

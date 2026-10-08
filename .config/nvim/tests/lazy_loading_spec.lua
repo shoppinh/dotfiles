@@ -54,7 +54,7 @@ check(
 )
 
 local gitsigns_spec = find_spec(performance_specs, "lewis6991/gitsigns.nvim")
-check(gitsigns_spec.opts.current_line_blame == false, "Gitsigns current-line blame must default to disabled")
+check(gitsigns_spec.opts.current_line_blame == true, "Gitsigns current-line blame must default to enabled")
 check_very_lazy("lewis6991/gitsigns.nvim")
 check_very_lazy("nvim-treesitter/nvim-treesitter-context")
 check_very_lazy("gbprod/yanky.nvim")

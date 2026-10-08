@@ -13,7 +13,7 @@ return {
     "lewis6991/gitsigns.nvim",
     event = very_lazy,
     opts = {
-      current_line_blame = false,
+      current_line_blame = true,
     },
   },
   { "nvim-treesitter/nvim-treesitter-context", event = very_lazy },

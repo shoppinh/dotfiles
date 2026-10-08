@@ -31,10 +31,6 @@ map("n", "<leader>Y", [["+Y]])
 -- NOTE: relocate to <leader>D if lazyvim.plugins.extras.dap.core is enabled
 -- (that extra claims <leader>d as the Debug group root)
 map({ "n", "v" }, "<leader>D", '"_d')
--- Paste over selection without clobbering register
--- Relocated off <leader>p — yanky.nvim (coding.yanky extra) owns <leader>p
--- as the yank-history picker in n+x modes
-map("x", "<leader>P", [["_dP]], { desc = "Paste over selection (no yank)" })
 -------------------------------------------------------------------
 -- Personal namespace: <leader>o ("own")
 -- All non-LazyVim, non-collision-checked binds live here going forward.
@@ -102,3 +98,4 @@ vim.keymap.set("n", "<M-j>", function() require("dap").step_over() end, { desc =
 vim.keymap.set("n", "<M-l>", function() require("dap").step_into() end, { desc = "Debug: Step Into" })
 vim.keymap.set("n", "<M-h>", function() require("dap").step_out() end, { desc = "Debug: Step Out" })
 vim.keymap.set("n", "<M-c>", function() require("dap").continue() end, { desc = "Debug: Start/Continue" })
+
