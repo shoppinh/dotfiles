@@ -7,33 +7,78 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "debugger": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "cli_default_open_behavior": "new_window",
+  "disable_ai": false,
+  "proxy": "",
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "mouse_wheel_zoom": true,
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "default_config_options": {
+        "reasoning_effort": "xhigh",
+        "model": "gpt-6.1-terra"
+      },
+      "type": "registry"
+    },
+    "cursor": {
+      "type": "registry"
+    }
+  },
   "buffer_line_height": "comfortable",
   "terminal": {
-    "font_family": "MesloLGS Nerd Font Mono"
+    "dock": "bottom",
+    "font_family": "JetBrainsMono Nerd Font"
   },
   "agent": {
+    "dock": "right",
+    "threads_sidebar": {
+      "position": "right"
+    },
     "default_profile": "ask",
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5-mini"
+      "effort": "xhigh",
+      "enable_thinking": true,
+      "provider": "x_ai",
+      "model": "grok-4.7"
     },
     "enabled": true,
     "button": true,
     "model_parameters": []
   },
   "minimap": {
-    "show": "never"
+    "show": "always"
   },
-  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "show_edit_predictions": true,
   "vim_mode": true,
-  "icon_theme": "Material Icon Theme",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Catppuccin Mocha",
+    "dark": "Material Icon Theme"
+  },
   "base_keymap": "VSCode",
   "ui_font_size": 16,
   "buffer_font_size": 13.0,
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Catppuccin Mocha"
+    "dark": "Dracula Solid"
   }
 }

@@ -1,0 +1,29 @@
+#!/bin/bash
+# Antigravity CLI (agy) statusLine helper.
+# Configured in ~/.gemini/antigravity-cli/settings.json with stack_with_default: true.
+# Caches the live `quota` payload to ~/.gemini/antigravity-cli/cache/usage.json
+# so ~/.local/bin/tmux-agy-usage can render 5h/weekly limits in the tmux status bar,
+# while printing nothing so agy's built-in status line remains unchanged.
+set -euo pipefail
+
+cache_dir="$HOME/.gemini/antigravity-cli/cache"
+cache_file="$cache_dir/usage.json"
+now=$(date +%s)
+
+payload=$(jq -c --argjson now "$now" '
+  if (.quota | type) == "object" and (.quota | length) > 0 then
+    {captured_at: $now, quota: .quota}
+  else
+    empty
+  end
+' 2>/dev/null || true)
+
+if [ -n "$payload" ]; then
+  mkdir -p "$cache_dir"
+  tmp=$(mktemp "$cache_dir/usage.json.XXXXXX")
+  if printf '%s\n' "$payload" > "$tmp"; then
+    mv -f "$tmp" "$cache_file"
+  else
+    rm -f "$tmp"
+  fi
+fi

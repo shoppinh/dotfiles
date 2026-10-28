@@ -1,0 +1,56 @@
+#!/bin/bash
+# Codex plan usage for the tmux status line (used in ~/.tmux.conf status-right).
+# Mirrors ~/.claude/tmux-usage.sh. Codex writes its rate limits (5h primary /
+# 7d secondary, or 30d on free plan) into `token_count` events of the session
+# rollout files under ~/.codex/sessions. Scan newest-first so empty/new sessions
+# without a token_count event fall back to the most recent session with limits.
+# Numbers older than 15 minutes are greyed out. Prints nothing if there's no data yet.
+dir="$HOME/.codex/sessions"
+[ -d "$dir" ] || exit 0
+
+f=""
+line=""
+while IFS= read -r candidate; do
+  [ -r "$candidate" ] || continue
+  match=$(grep '"rate_limits":{' "$candidate" | grep '"used_percent":[0-9]' | tail -1)
+  if [ -n "$match" ]; then
+    f="$candidate"
+    line="$match"
+    break
+  fi
+done < <(find "$dir" -name 'rollout-*.jsonl' -mtime -31 -exec stat -f '%m %N' {} + 2>/dev/null \
+  | sort -rn | cut -d' ' -f2-)
+
+[ -n "$line" ] || exit 0
+
+now=$(date +%s)
+captured=$(stat -f %m "$f")
+
+printf '%s' "$line" | jq -r --argjson now "$now" --argjson captured "$captured" '
+  def ts: if . == null then null
+          elif type == "number" then (if . > 1e12 then ./1000 else . end)
+          else (sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z") | try fromdateiso8601 catch null) end;
+  def countdown:
+    if . >= 84600 then "\((. / 86400) | round)d"
+    elif . >= 3600 then "\((. / 3600) | round)h"
+    else "\((. / 60) | floor)m" end;
+  def winlabel: if . == null then "?"
+             elif . % 1440 == 0 then "\(. / 1440)d"
+             elif . % 60 == 0 then "\(. / 60)h"
+             else "\(.)m" end;
+  ((.timestamp | ts) // $captured) as $event_ts
+  | (($now - $event_ts) > 900) as $stale
+  | .payload.rate_limits
+  | [ .primary, .secondary ]
+  | map(select(. != null and .used_percent != null)
+        | (.window_minutes | winlabel) as $label | .resets_at as $reset
+        | if $reset != null and $now >= $reset then
+            "#[fg=colour244]\($label) 0%"
+          else
+            .used_percent as $p
+            | (if $stale then "colour244" elif $p < 50 then "green" elif $p < 80 then "yellow" else "red" end) as $c
+            | "#[fg=colour250]\($label) #[fg=\($c)]\($p | round)%"
+              + (if $reset != null then " #[fg=colour244]↻\($reset - $now | countdown)" else "" end)
+          end)
+  | if length > 0 then "#[fg=colour110]◎ Codex " + join("  ") else empty end
+' 2>/dev/null

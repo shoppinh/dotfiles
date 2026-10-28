@@ -1,0 +1,279 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+KITTY_DIR="${KITTY_CONFIG_DIRECTORY:-$HOME/.config/kitty}"
+THEMES_DIR="$KITTY_DIR/kitty-themes/themes"
+THEME_CONF="$KITTY_DIR/theme.conf"
+INCLUDE_PREFIX="include ./kitty-themes/themes/"
+KITTY_SOCKET="${KITTY_LISTEN_ON:-unix:${HOME}/.cache/kitty/control.sock}"
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+list_themes() {
+  find "$THEMES_DIR" -maxdepth 1 -name '*.conf' -print \
+    | sed 's|.*/||; s|\.conf$||' \
+    | LC_ALL=C sort
+}
+
+current_theme() {
+  local line target
+  if [[ -f "$THEME_CONF" ]]; then
+    line="$(sed -n 's|^include ./kitty-themes/themes/\(.*\)\.conf$|\1|p' "$THEME_CONF" | head -n 1)"
+    if [[ -n "$line" ]]; then
+      printf '%s\n' "$line"
+      return 0
+    fi
+  fi
+  if [[ -L "$THEME_CONF" ]]; then
+    target="$(basename "$(readlink "$THEME_CONF")")"
+    printf '%s\n' "${target%.conf}"
+  fi
+}
+
+write_theme_conf() {
+  local theme="$1"
+  local theme_file="$THEMES_DIR/${theme}.conf"
+
+  python3 - "$theme" "$theme_file" "$THEME_CONF" "$INCLUDE_PREFIX" <<'PY'
+import os
+import re
+import sys
+import tempfile
+
+theme, theme_file, theme_conf, include_prefix = sys.argv[1:5]
+
+HEX_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
+MANAGED_KEYS = {
+    "active_border_color",
+    "inactive_border_color",
+    "bell_border_color",
+    "active_tab_foreground",
+    "active_tab_background",
+    "inactive_tab_foreground",
+    "inactive_tab_background",
+}
+MANAGED_HEADER_RE = re.compile(
+    r"^#\s*(?:Window borders|Tab bar)\s*\(.*palette\)\s*$", re.IGNORECASE
+)
+
+
+def parse_hex(value):
+    h = value.lstrip("#")
+    return tuple(int(h[i : i + 2], 16) for i in (0, 2, 4))
+
+
+def fmt_hex(rgb):
+    return "#{:02x}{:02x}{:02x}".format(*(max(0, min(255, round(c))) for c in rgb))
+
+
+def blend(c1, c2, t):
+    r1, g1, b1 = parse_hex(c1)
+    r2, g2, b2 = parse_hex(c2)
+    return fmt_hex((r1 + (r2 - r1) * t, g1 + (g2 - g1) * t, b1 + (b2 - b1) * t))
+
+
+def rel_lum(value):
+    def chan(v):
+        v /= 255.0
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+
+    r, g, b = parse_hex(value)
+    return 0.2126 * chan(r) + 0.7152 * chan(g) + 0.0722 * chan(b)
+
+
+def contrast(c1, c2):
+    l1, l2 = rel_lum(c1), rel_lum(c2)
+    hi, lo = max(l1, l2), min(l1, l2)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def parse_theme_colors(path):
+    colors = {}
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            parts = stripped.split()
+            if len(parts) >= 2 and HEX_RE.match(parts[1]):
+                colors[parts[0]] = parts[1].lower()
+    return colors
+
+
+def derive_palette(colors):
+    bg = colors.get("background", "#1e1e1e")
+    fg = colors.get("foreground", "#ffffff")
+
+    chromatic = [
+        colors[k]
+        for k in ("color3", "color4", "color6", "color5", "color2", "color11", "color12")
+        if k in colors
+    ]
+    accent = next((c for c in chromatic if contrast(c, bg) >= 3.0), None)
+    if accent is None and chromatic:
+        best_chromatic = max(chromatic, key=lambda c: contrast(c, bg))
+        if contrast(best_chromatic, bg) >= 2.2:
+            accent = best_chromatic
+    if accent is None:
+        accent = max(chromatic + [fg], key=lambda c: contrast(c, bg))
+
+    active_border = accent
+    inactive_border = blend(bg, fg, 0.25)
+
+    bell_candidates = [colors[k] for k in ("color1", "color9") if k in colors]
+    bell_border = next((c for c in bell_candidates if contrast(c, bg) >= 2.5), None)
+    if bell_border is None:
+        bell_border = max(bell_candidates or [accent], key=lambda c: contrast(c, bg))
+
+    active_tab_bg = active_border
+    primary_fg = max((bg, fg), key=lambda c: contrast(c, active_tab_bg))
+    if contrast(primary_fg, active_tab_bg) >= 4.5:
+        active_tab_fg = primary_fg
+    else:
+        fallbacks = [
+            c
+            for c in (
+                bg,
+                fg,
+                colors.get("color0"),
+                colors.get("color15"),
+                "#000000",
+                "#ffffff",
+            )
+            if c
+        ]
+        active_tab_fg = max(fallbacks, key=lambda c: contrast(c, active_tab_bg))
+
+    inactive_tab_bg = bg
+    c8 = colors.get("color8")
+    fg_contrast = contrast(fg, inactive_tab_bg)
+    if c8 and 3.0 <= contrast(c8, inactive_tab_bg) < fg_contrast:
+        inactive_tab_fg = c8
+    else:
+        inactive_tab_fg = blend(inactive_tab_bg, fg, 0.55)
+        if contrast(inactive_tab_fg, inactive_tab_bg) < 3.0:
+            inactive_tab_fg = blend(inactive_tab_bg, fg, 0.72)
+        if (
+            contrast(inactive_tab_fg, inactive_tab_bg) < 3.0
+            and fg_contrast > contrast(inactive_tab_fg, inactive_tab_bg)
+        ):
+            inactive_tab_fg = fg
+
+    return {
+        "active_border_color": active_border,
+        "inactive_border_color": inactive_border,
+        "bell_border_color": bell_border,
+        "active_tab_foreground": active_tab_fg,
+        "active_tab_background": active_tab_bg,
+        "inactive_tab_foreground": inactive_tab_fg,
+        "inactive_tab_background": inactive_tab_bg,
+    }
+
+
+def read_preserved_extras(path):
+    if not os.path.isfile(path) or os.path.islink(path):
+        return []
+    extras = []
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for raw_line in fh:
+            line = raw_line.rstrip("\r\n")
+            stripped = line.strip()
+            if stripped.startswith(include_prefix) and stripped.endswith(".conf"):
+                continue
+            if MANAGED_HEADER_RE.match(stripped):
+                continue
+            key = stripped.split()[0] if stripped and not stripped.startswith("#") else ""
+            if key in MANAGED_KEYS:
+                continue
+            extras.append(line)
+    return extras
+
+
+colors = parse_theme_colors(theme_file)
+palette = derive_palette(colors)
+label = theme.replace("_", " ")
+extras = read_preserved_extras(theme_conf)
+
+lines = [
+    f"{include_prefix}{theme}.conf",
+    f"# Window borders ({label} palette)",
+    f"active_border_color     {palette['active_border_color']}",
+    f"inactive_border_color   {palette['inactive_border_color']}",
+    f"bell_border_color       {palette['bell_border_color']}",
+    f"# Tab bar ({label} palette)",
+    f"active_tab_foreground   {palette['active_tab_foreground']}",
+    f"active_tab_background   {palette['active_tab_background']}",
+    f"inactive_tab_foreground {palette['inactive_tab_foreground']}",
+    f"inactive_tab_background {palette['inactive_tab_background']}",
+    *extras,
+]
+
+parent_dir = os.path.dirname(os.path.abspath(theme_conf))
+fd, tmp_path = tempfile.mkstemp(prefix=".theme.conf.", dir=parent_dir)
+try:
+    with os.fdopen(fd, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(lines) + "\n")
+    os.chmod(tmp_path, 0o644)
+    if os.path.islink(theme_conf):
+        os.unlink(theme_conf)
+    os.replace(tmp_path, theme_conf)
+except Exception:
+    if os.path.exists(tmp_path):
+        os.unlink(tmp_path)
+    raise
+PY
+}
+
+reload_kitty() {
+  # load-config over the TTY waits for a reply that never comes back through
+  # tmux, which hangs the popup. Never wait; prefer the listen_on socket.
+  KITTY_SOCKET="$KITTY_SOCKET" python3 - <<'PY'
+import os, subprocess
+
+socket = os.environ.get("KITTY_LISTEN_ON") or os.environ["KITTY_SOCKET"]
+candidates = (
+    ["kitty", "@", "--to", socket, "--no-response", "load-config"],
+    ["kitty", "@", "--no-response", "load-config"],
+)
+for cmd in candidates:
+    try:
+        result = subprocess.run(
+            cmd,
+            timeout=0.8,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        if result.returncode == 0:
+            break
+    except (subprocess.TimeoutExpired, OSError):
+        continue
+PY
+}
+
+[[ -d "$THEMES_DIR" ]] || die "Themes directory not found: $THEMES_DIR"
+command -v kitty >/dev/null || die "kitty is not installed"
+
+if [[ $# -gt 0 ]]; then
+  selected="$1"
+else
+  command -v fzf >/dev/null || die "fzf is not installed"
+  current="$(current_theme || true)"
+  selected="$(
+    list_themes | fzf \
+      --prompt="kitty theme> " \
+      --header="current: ${current:-none}" \
+      --layout=reverse \
+      --border
+  )" || true
+fi
+
+[[ -n "${selected:-}" ]] || exit 0
+[[ -f "$THEMES_DIR/${selected}.conf" ]] || die "Theme file missing: $THEMES_DIR/${selected}.conf"
+
+write_theme_conf "$selected"
+reload_kitty
+tmux display-message "kitty theme: $selected" 2>/dev/null || true

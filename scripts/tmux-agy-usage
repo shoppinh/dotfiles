@@ -1,0 +1,45 @@
+#!/bin/bash
+# Antigravity CLI (agy) plan usage for the tmux status line (used in ~/.tmux.conf status-right).
+# Reads ~/.gemini/antigravity-cli/cache/usage.json, which ~/.local/bin/agy-statusline
+# refreshes whenever an agy session updates its status line.
+# Displays 5h and 7d (weekly) usage for both quota categories:
+#   - Gem    (gemini-5h, gemini-weekly)
+#   - Cl/GPT (3p-5h, 3p-weekly)
+# Numbers older than 15 minutes are greyed out. Prints nothing if there's no data yet.
+f="$HOME/.gemini/antigravity-cli/cache/usage.json"
+[ -r "$f" ] || exit 0
+now=$(date +%s)
+
+jq -r --argjson now "$now" '
+  def ts: if . == null then null
+          elif type == "number" then (if . > 1e12 then ./1000 else . end)
+          else (sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z") | try fromdateiso8601 catch null) end;
+  def countdown:
+    if . >= 84600 then "\((. / 86400) | round)d"
+    elif . >= 3600 then "\((. / 3600) | round)h"
+    else "\((. / 60) | floor)m" end;
+  def fmt_win($label; $w; $stale):
+    if $w == null or ($w.disabled == true) or ($w.remaining_fraction == null) then empty
+    else
+      ($w.reset_time | ts) as $reset
+      | ($reset != null and $reset > 0) as $has_reset
+      | if $has_reset and $now >= $reset then
+          "#[fg=colour244]\($label) 0%"
+        else
+          (((1 - $w.remaining_fraction) * 100) | if . < 0 then 0 elif . > 100 then 100 else . end) as $p
+          | (if $stale then "colour244" elif $p < 50 then "green" elif $p < 80 then "yellow" else "red" end) as $c
+          | "#[fg=colour250]\($label) #[fg=\($c)]\($p | round)%"
+            + (if $has_reset then " #[fg=colour244]↻\($reset - $now | countdown)" else "" end)
+        end
+    end;
+  def fmt_group($color; $name; $b5; $bw; $stale):
+    [ fmt_win("5h"; $b5; $stale), fmt_win("7d"; $bw; $stale) ]
+    | if length > 0 then "#[fg=\($color)]\($name) " + join(" ") else empty end;
+  (($now - (.captured_at // 0)) > 900) as $stale
+  | (.quota // {}) as $q
+  | [
+      fmt_group("colour39"; "Gem"; $q["gemini-5h"]; $q["gemini-weekly"]; $stale),
+      fmt_group("colour176"; "Cl/GPT"; $q["3p-5h"]; $q["3p-weekly"]; $stale)
+    ]
+  | if length > 0 then "#[fg=colour75]✦ Agy " + join(" #[fg=colour240]│ ") else empty end
+' "$f" 2>/dev/null

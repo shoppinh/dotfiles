@@ -171,3 +171,17 @@ autocmd("VimLeavePre", {
     lsp_shutdown_timers = {}
   end,
 })
+
+-- kotlin-language-server 1.3.13 throws "-32603 Internal error" (UnsupportedOperationException in
+-- NoTopLevelDescriptorProvider) for textDocument/documentHighlight when the cursor rests on a class
+-- declaration, which pops an error toast on every CursorHold. Turn the capability off for this server
+-- so illuminate/cursor-hold highlighting never sends the request.
+autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("kotlin_ls_no_document_highlight", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == "kotlin_language_server" then
+      client.server_capabilities.documentHighlightProvider = false
+    end
+  end,
+})

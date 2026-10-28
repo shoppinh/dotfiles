@@ -2,7 +2,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "dark2026",
+      colorscheme = "dracula",
     },
   },
   {
@@ -95,5 +95,25 @@ return {
   {
     "D0nw0r/dark2026.nvim",
     lazy = true,
-  }
+  },
+  {
+    "tanvirtin/monokai.nvim",
+    lazy = true,
+    init = function()
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.api.nvim_create_augroup("monokai_contrast", { clear = true }),
+        pattern = "monokai*",
+        callback = function()
+          vim.api.nvim_set_hl(0, "Visual", { bg = "#415980" })
+          vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#374b6b" })
+          vim.api.nvim_set_hl(0, "CursorLine", { bg = "#3b404c" })
+          vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fd971f", bg = "#3b404c", bold = true })
+        end,
+      })
+    end,
+  },
+  {
+    "ayu-theme/ayu-vim",
+    lazy = true,
+  },
 }
